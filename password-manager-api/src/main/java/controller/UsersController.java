@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import service.Accounts;
+import service.Encryption;
 import service.Users;
+import util.RSA;
 
 @Controller
 @RequestMapping("/users")
@@ -43,6 +45,16 @@ public class UsersController {
         Accounts.get().put(u.getId(), new ArrayList<Account>());
 
         return new User(u.getId(),"SignUp Sucess", "xxxxx");
+    }
+    
+    @RequestMapping("/auth")
+    public @ResponseBody String [] foo(@RequestParam(value="email", required=true) String email, @RequestParam(value="foo", required=true) String randomLoc ) {
+    	
+    	User u = Users.search(email);
+    	u.setRsaInstance(new RSA(1024));
+    	Encryption e = new Encryption(randomLoc, u);
+    	
+    	return e.get();
     }
 
 }

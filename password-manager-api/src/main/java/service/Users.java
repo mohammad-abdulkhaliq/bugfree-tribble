@@ -41,6 +41,15 @@ public class Users{
 
 //        return -1;
     }
+    
+    public static User search(String email) {
+
+        for(User u : CACHE)
+            if(u.getEmail().equals(email))
+                return u;
+
+        return null;
+    }
 
     public static int generateUserId() {
 
